@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+	<img src='{% static "img/coming-soon.jpg" %}' style="width: 100%; margin-top:0px;">
+	<div class="contact">
+		<form class="form" method="POST">{% csrf_token %}
+			<label>Your name</label><input type="text">
+			<label>E-mail</label><input style="width: 300px;" type="text"><br>
+			<textarea placeholder="message" class="msg"></textarea>
+			<br><input type="submit" value="Submit">
+		</form>
+	</div>
+{% endblock content %}

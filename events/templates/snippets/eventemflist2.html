@@ -1,0 +1,29 @@
+{% for emf in emfs %}
+<div class="card my-4">
+  <h5 class="card-header h5"><a href="{{ emf.get_absolute_url }}">{{ emf.title }}</a></h5>
+  <div class="card-body">
+    <div class="row">
+      <form method="POST" action="{% url 'bookings:update' %}" class="form form-control">{% csrf_token %}
+        <h5>Cities </h5>
+        {% for city in emf.city_set.all %} <!-- display all the cities -->
+           <input type="radio" name="city_id" value="{{ city.id }}">
+           {{ city.city }}
+        {% endfor %}
+        <br>
+        <h5>Events </h5>
+    	 {% for event in emf.events.all %}
+          <input type="radio" name="event_id" value="{{ event.id }}">
+    		  {{ event.event }}
+    	{% endfor %}
+      <input type="hidden" name="emf_id" value="{{ emf.id }}">
+      <input type="submit" class="btn btn-outline-secondary" value="ADD TO BOOKING">
+    </form>
+	</div>
+	</div>
+</div>
+{% endfor %}
+<!-- <div class="row">
+    <div class="col-2 offset-10">
+        {% include 'snippets/update-booking.html' with booking=booking_obj emf=emf %}
+      </div>
+    </div> -->

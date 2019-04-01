@@ -1,0 +1,15 @@
+<div class="card" style="width: 28rem;">
+  <img class="card-img-top" src='{{ eve.image.url }}' alt="Card image cap">
+  <div class="card-body">
+    <h4 class="card-title mr-auto">{{ eve.event }}</h4>
+    <p class="card-text">{{ eve.description }}.</p>
+	<div class="row">
+	    <div class="col-lg-6">
+	    <a href="bookings/event={{eve.slug}}" class="btn btn-primary">BOOK NOW</a>
+		</div>
+		<!-- <div class="col-lg-6">
+			{% include 'snippets/update-booking-event.html' with booking=booking_obj event=eve %}
+		</div> -->
+	</div>
+  </div>
+</div>

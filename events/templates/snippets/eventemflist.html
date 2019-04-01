@@ -1,0 +1,40 @@
+<!-- delete this file. similar already exist emfs app -->
+{% for emf in emfs %}
+<div class="card my-4">
+  <h5 class="card-header h5"><a href="{{ emf.get_absolute_url }}">{{ emf.title }}</a></h5>
+  <div class="card-body">
+    <div class="row">
+      <div class="col-2">
+        <h5 class="card-title">Cities:</h5>
+      </div>
+    {% for city in emf.city_set.all %} <!-- display all the cities -->
+      <div class="col-3">
+        <!-- {{  city.city  }} -->
+        <form method="POST" action="{% url 'bookings:update' %}" class="form">{% csrf_token %}
+            <input type="hidden" name="city_id" value="{{ city.id }}">
+            {% if booking.city == city and booking.emf == emf %}
+            <!-- city is already in booking. show in red color -->
+              <button type='submit' class="btn btn-sm btn-danger" style="padding:0px;">{{ city.city }}</button>
+            {% else %}
+            <!-- city is available to add, show in green color -->
+              <button type='submit' class="btn btn-sm btn-success">{{ city.city }}</button>
+          {% endif %}
+        </form>
+      </div>
+    {% endfor %}
+    </div>
+    <div class="row">
+    	{% for event in emf.events.all %}
+    		<div class="col-lg-3">
+    			<a href="{{ event.get_absolute_url }}" ><p class="card-text">{{ event }}</p></a>
+    		</div>
+    	{% endfor %}
+	</div>
+	<div class="row">
+		<div class="col-2 offset-10">
+    		{% include 'snippets/update-booking.html' with booking=booking_obj emf=emf %}
+    	</div>
+    </div>
+  </div>
+</div>
+{% endfor %}

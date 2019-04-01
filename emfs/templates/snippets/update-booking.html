@@ -1,0 +1,8 @@
+<form method="POST" action="{% url 'bookings:update' %}" class="form">{% csrf_token %}
+	<input type="hidden" name="emf" value="{{ emf.id }}">
+	{% if booking.emf == emf %}
+		<button type='submit' class="btn btn-sm btn-danger" style="padding:0px;">Remove</button>
+	{% else %}
+		<button type='submit' class="btn btn-sm btn-success">Add to Booking</button>
+	{% endif %}
+</form>

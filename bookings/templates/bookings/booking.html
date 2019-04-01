@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<div class="container">
+	<div class="row">
+		<div class="col-sm-1 col-md-3 col-lg-8 mr-auto ml-auto" style="min-height: 200px;">
+			<form method="POST" action="{% url 'bookings:booking' %}" class="form-control form-group">{% csrf_token %}
+				{{ form }}
+				<input type="submit" value="Submit">
+			</form>
+			{% if request.GET.q %}
+				{% if found %}
+					<p>Results for : <strong>{{ request.GET.q }}</strong> </p>
+				{% else %}
+					<p>No RESULTS for :<strong> {{ request.GET.q }}</strong></p>
+				{% endif %}
+			{% endif %}
+			{% if no_result %}
+				<p> NO RESULTS FOUND. Try Again. </p>
+			{% else %}
+				{% if both %}
+					<p> BOTH </p>
+				{% elif event_set_present %}
+				    <p> EVENT </p>
+				{% elif city_set_present %}
+				    <p> CITY </p>
+				{% endif %}
+				{% if queryset %}
+					<div>
+					{% include 'snippets/eventemflist2.html' with emfs=queryset booking=booking_obj %}</div>
+				{% elif eqs %}
+					<p>{{ event }} is organised by </p>
+					<div>
+					{% include 'snippets/eventemflist2.html' with emfs=eqs booking=booking_obj %}</div>
+				{% elif cqs %}
+					<div>
+					{% include 'snippets/eventemflist2.html' with emfs=cqs booking=booking_obj %}</div>
+				{% else %}
+					<strong>No Results. Please try again.</strong>
+				{% endif %}
+			{% endif %}
+			<!-- {% if queryset or cqs or eqs %}
+				<a class="btn btn-success" href="{% url 'bookings:home' %}">Proceed to Book</a>
+			{% endif %} -->
+		</div>
+	</div>
+</div>
+{% endblock content %}

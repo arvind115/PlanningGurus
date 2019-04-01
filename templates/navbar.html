@@ -1,0 +1,63 @@
+{% url 'home' as home_url %}
+{% url 'blog' as blog_url %}
+{% url 'accounts:login' as login_url %}
+{% url 'accounts:register' as register_url %}
+{% url 'accounts:logout' as logout_url %}
+{% url 'bookings:home' as booking_url %}
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <i class="fab fa-product-hunt fa-2x"></i>
+  <a class="navbar-brand" href="{% url 'home' %}">Planning Gurus</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item">
+        <a class="nav-link {% if request.path == home_url %}active{% endif %}"href="{% url 'home' %}"><i class="fas fa-home"></i><span class="sr-only">(current)</span></a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link {% if request.path == blog_url %}active{% endif %}" href="{% url 'blog' %}">Blog</a>
+      </li>
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+          Book
+        </a>
+        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+          <a class="dropdown-item" href="{% url 'bookings:booking' %}">Make Booking</a>
+          <a class="dropdown-item {% if request.path == booking_url %}active{% endif %}" href="{% url 'bookings:home' %}">Bookings</a>
+          <div class="dropdown-divider"></div>
+          <a class="dropdown-item" href="{% url 'emfs:emfs' %}">EMFs</a>
+        </div>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link {% if request.path == booking_url %}active{% endif %}" href="{% url 'bookings:home' %}"><i class="fas fa-id-card-alt"></i></a>
+      </li>
+    </ul>
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item">
+       <form class="form-inline my-2 ml-2" action="{% url 'search:query' %}">
+         <input class="form-control mr-sm-2" type="search" name='q' placeholder="Search" aria-label="Search">
+         <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+       </form>
+     </li>
+    </ul>
+    <ul class="navbar-nav mr-auto">
+      {% if request.user.is_authenticated %}
+      <li class="nav-item">
+          <a class="nav-link">Welcome {{ request.user.name }}</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'accounts:logout' %}">LOGOUT</a>
+        </li>
+      {% else %}
+        <li class="nav-item">
+          <a class="nav-link {% if request.path == login_url %}active{% endif %}" href="{% url 'accounts:login' %}">Login</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link {% if request.path == register_url %}active{% endif %}" href="{% url 'accounts:register' %}"><i class="fas fa-user-plus"></i></a>
+        </li>
+      {% endif %}
+  </ul>
+  </div>
+</nav>

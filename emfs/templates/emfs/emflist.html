@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<!-- delete this file. similar already exist emfs app -->
+{% for emf in emfs %}
+<div class="card my-4">
+  <h5 class="card-header h5"><a href="{{ emf.get_absolute_url }}">{{ emf.title }}</a></h5>
+  <div class="card-body">
+    <h5 class="card-title">City: {{ emf.city_set.all.first }}</h5> <!-- display all the cities -->
+    <div class="row">
+    	{% for event in emf.events.all %}
+    		<div class="col-lg-3">
+    			<a href="{{ event.get_absolute_url }}" ><p class="card-text">{{ event }}</p></a>
+    		</div>
+    	{% endfor %}
+	</div>
+	<div class="row">
+		<div class="col-2 offset-10">
+    		{% include 'snippets/update-booking.html' with booking=booking_obj emf=emf %}
+    	</div>
+    </div>
+  </div>
+</div>
+{% endfor %}
+{% endblock content %}

@@ -1,0 +1,9 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+{% for object in eventlist %}
+	{{ forloop.counter }} Event:  <a href='{{ object.get_absolute_url }}'>{{ object.event }}</a><br>
+	{{ object.description }}<br><br>
+{% endfor %}
+{% endblock content %}

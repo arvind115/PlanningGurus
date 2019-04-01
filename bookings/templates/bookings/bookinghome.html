@@ -1,0 +1,82 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+{% if warning %}
+	<strong><a href="{{ booking_obj.emf.get_absolute_url }}">{{ booking_obj.emf }}</a></strong> don't deal in <strong>{{ booking_obj.event }}</strong>
+{% endif %}
+{% if cwarning %}
+	<p><a href="{{ booking_obj.emf.get_absolute_url }}"><strong>{{ booking_obj.emf }}<a/></strong> don't operate in {{ booking_obj.city }}</p>
+{% endif %}
+{% if warning or cwarning %}
+	<p>Please make another choice.</p>
+	<p>Visit their page to know about their services.</p>
+{% endif %}
+{% if booking_obj.city is None and booking_obj.emf is None %}
+	<p><strong>You don't have any bookings to display. Please make one.</strong></p>
+	<a class="btn btn-primary" href="{% url 'bookings:booking' %}">Make booking</a>
+{% else %}
+<table class="table">
+	<thead>
+		<tr>
+			<th>ID</th>
+			<th>Date</th>
+			<th>City</th>
+			<th>Event</th>
+			<th>EMF</th>
+		</tr>
+	</thead>
+<tbody>
+	<tr>
+		<td>{{ booking_obj.id }}</td>
+		<td>{{ booking_obj.booking_date }}</td>
+		<td>
+ 		{% if booking_obj.city is None %} <!-- display the add city form -->
+		 {% include 'snippets/update-city.html' with booking=booking_obj df=True form=form %}
+		 {% else %} <!-- show the remove button -->
+		 	{{ booking_obj.city }}
+		   	{% include 'snippets/update-city.html' with booking=booking_obj city=booking_obj.city %}
+		{% endif %}
+		</td>
+		<!-- <td>
+		 {% if booking_obj.event is not None %}
+			<a href="{{ booking_obj.event.get_absolute_url }}">{{ booking_obj.event }}</a>
+		   {% include 'snippets/update-booking-event.html' with booking=booking_obj event=booking_obj.event %}
+		{% else %}
+			<a class="btn btn-success" href="{% url 'home' %}">Add an EVENT</a>
+		{% endif %}
+		</td> -->
+		<td>
+		{% if booking_obj.event is None %} <!-- display the add event form -->
+		    {% include 'snippets/update-booking-event.html' with booking=booking_obj df=True form=eform %}
+		{% else %} <!-- show the remove button -->
+		 	<a href="{{ booking_obj.event.get_absolute_url }}">{{ booking_obj.event }}</a>
+		   	{% include 'snippets/update-booking-event.html' with booking=booking_obj event=booking_obj.event %}
+		{% endif %}
+		</td>
+		<td>
+		{% if booking_obj.emf is not None %}
+			<a href="{{ booking_obj.emf.get_absolute_url }}">{{ booking_obj.emf }}</a>
+		   {% include 'snippets/update-booking.html' with booking=booking_obj emf=booking_obj.emf %}
+		{% else %} <!-- emf is not there -->
+			<!-- if event is there, redirect to bookings/event=<slug> -->
+			{% if booking_obj.event %}
+				<a href="event={{booking_obj.event.slug}}" class="btn btn-primary">ADD AN EMF</a>
+			{% else %}
+				<a class="btn btn-success" href="{% url 'bookings:booking' %}">Add an EMF</a>
+			{% endif %}
+		{% endif %}
+		</td>
+	</tr>
+	<tr>
+		{% if booking_obj.emf and booking_obj.event and booking_obj.city %}
+			<td colspan="3"></td>
+			{% if not warning and not cwarning %}
+				<td><a class="btn btn-primary" href="{% url 'bookings:details' %}">Add Details</a></td>
+			{% endif %}
+		{% endif %}
+	</tr>
+</tbody>
+</table>
+{% endif %}
+{% endblock content %}

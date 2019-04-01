@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="row">
+	<div class="col-12 col-md-6">
+		<h4>{{ object.title }}</h4>
+	</div>
+</div>
+<div class="row">
+	<div class="col-12 col-md-6">
+		Deals in :
+		{% for event in object.events.all %}
+		<div class="row">
+			<div class="col ml-auto mr-auto">
+				<a href="{{ event.get_absolute_url }}">{{ event }}</a>
+			</div>
+		</div>
+	{% endfor %}
+	</div>
+	<div class="col-12 col-md-6">
+	{% include 'snippets/update-booking.html' with booking=booking_obj emf=object %}
+	</div>
+</div>
+{% endblock content %}

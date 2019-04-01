@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block content %}
+	{% if not has_card %}
+		<div class='col-10 col-md-6 mx-auto'>
+    		<h1>Add Payment Method</h1>
+    	<div class='stripe-payment-form' data-token='{{ publish_key }}' data-next-url='{{ request.build_absolute_uri }}' data-btn-title='Add Card'></div>
+	</div>
+	{% else %} <!-- already has a card saved -->
+	<h3 class="display-3">Finalise Order</h3>
+		<p><strong>Order ID: </strong>{{ order_obj.order_id }}</p>
+		<p><strong>Event: </strong><a href="{{ order_obj.booking.event.get_absolute_url }}">{{ order_obj.booking.event }}</a></p>
+		<p><strong>Emf: </strong><a href="{{ order_obj.booking.emf.get_absolute_url }}">{{ order_obj.booking.emf }}</a></p>
+		<p><strong>City: </strong>{{ order_obj.booking.city }}</p>
+		<p><strong>Booking Date: </strong>{{ order_obj.booking.booking_date }}</p>
+		<p><strong>Amount: </strong>{{ order_obj.booking.amount.amount }}</strong>
+		<p><strong>Card: </strong>{{ billing_profile.default_card }} (<a href="{{ billing_profile.get_payment_method_url }}?next={{ request.build_absolute_uri }}">Change</a>)</p>
+		<form method="POST">{% csrf_token %}
+			<button type="submit" class="btn btn-success">Confirm Payment</button>
+		</form>
+	{% endif %}
+
+{% endblock content %}

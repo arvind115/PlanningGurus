@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<h3 class="display-4">Checkout view</h3>
+{% if not billing_profile %}
+	<div class="row">
+		<div class="col-md-6 col-sm-12">
+			<strong>LOGIN</strong>
+			{% include 'snippets/form.html' with form=login_form next=request.build_absolute_uri %}
+		</div>
+		<div class="col-md-6 col-sm-12">
+			<a href="{% url 'accounts:register' %}" class="btn btn-primary">Register</a>
+		</div>
+	</div>
+{% else %}
+		<!-- we have a billing profile -->
+		{% if order_obj is None or order_obj.booking.event is None and order_obj.booking.emf is None %}
+			<strong> No Booking created. Please make a booking first.</strong>
+			<a class="btn btn-primary" href="{% url 'bookings:booking' %}">Make a Booking</a>
+		{% else %}
+		<div class="row">
+			<div class="col-6">
+				<p><strong>Order ID: </strong>{{ order_obj.order_id }}</p>
+				<p><strong>Event: </strong><a href="{{ order_obj.booking.event.get_absolute_url }}">{{ order_obj.booking.event }}</a></p>
+				<p><strong>Emf: </strong><a href="{{ order_obj.booking.emf.get_absolute_url }}">{{ order_obj.booking.emf }}</a></p>
+				<p><strong>City: </strong>{{ order_obj.booking.city }}</p>
+				<p><strong>Booking Date: </strong>{{ order_obj.booking.booking_date }}</p>
+				<p><strong>Amount: </strong>{{ order_obj.booking.amount.amount }}</strong></p>
+			</div>
+			<div class="col-6">
+				<strong>Details</strong>
+				<p><strong>Decoration: </strong>{{ order_obj.booking.details.decor }}</p>
+				<p><strong>Photography: </strong>{% if order_obj.booking.details.photography %}Yes{% else %}No{% endif %}</p>
+				<p><strong>No of Guests: </strong>{{ order_obj.booking.details.people }}</p>
+				<p><strong>Music & Entertainment: </strong>{% if order_obj.booking.details.DJ_Entertainment %}Yes{% else %}No{% endif %}</p>
+
+				<a class="btn btn-sm btn-outline-primary" href="{% url 'bookings:details' %}">Change details</a>
+			</div>
+		</div>
+			<form method="POST">{% csrf_token %}
+				<button type="submit" class="btn btn-success">Proceed to Pay</button>
+			</form>
+	{% endif %}
+{% endif %}
+{% endblock content %}

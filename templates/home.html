@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+  <p>Your one stop for all the events. We have got you covered for the birthdays, kitties, cocktails parties, and all the other kind of parties </p>
+
+	<div class="row">
+	{% for eve in events %}
+	    <div class="col-lg-6">
+	    	{% include 'snippets/card.html' %}
+	    </div>
+  {% endfor %}
+  </div>
+{% endblock content %}

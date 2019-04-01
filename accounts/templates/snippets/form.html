@@ -1,0 +1,11 @@
+<form method="POST" action="{% if action_url %}{{ action_url }}{% else %}{% url 'accounts:login' %}{% endif %}">{% csrf_token %}
+	{% if next %}
+		<input type="hidden" name="next" value="{{ next }}"/>
+	{% endif %}
+	{{ form.as_p }}
+	<button type="submit" class="btn btn-success">Sign In</button>
+</form>
+
+<!-- in case of GuestUser creation, the action_url takes the form data to 'guest_register_view' in
+	accounts.views, a new GuestUser is created and the 'bookings:checkout' is thrown into the urlbar.
+ -->

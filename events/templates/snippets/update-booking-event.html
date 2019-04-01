@@ -1,0 +1,15 @@
+{% if df %}
+<form method="POST" action="{% url 'bookings:update' %}" class="form">{% csrf_token %}
+	{{ form.as_p }}
+	<input type="submit" value="ADD EVENT" class="btn btn-outline-secondary">
+</form>
+{% else %}
+<form method="POST" action="{% url 'bookings:update' %}" class="form">{% csrf_token %}
+	<input type="hidden" name="event" value="{{ event.id }}">
+	{% if booking.event == event %}
+		<button type='submit' class="btn btn-sm btn-danger" style="padding:0px;">Remove</button>
+	{% else %}
+		<button type='submit' class="btn btn-success">Add Event</button>
+	{% endif %}
+</form>
+{% endif %}
