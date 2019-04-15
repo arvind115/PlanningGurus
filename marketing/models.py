@@ -11,7 +11,7 @@ class MarketingPreference(models.Model):
     mailchimp_msg               = models.TextField(null=True, blank=True)
     timestamp                   = models.DateTimeField(auto_now_add=True)
     updated                      = models.DateTimeField(auto_now=True)
-
+    #add an activation field here
     def __str__(self):
         return self.user.email
 
