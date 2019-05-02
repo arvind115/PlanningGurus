@@ -1,11 +1,9 @@
 {% extends 'base.html' %}
 {% load static %}
-
 {% block content %}
 <p> In register page</p>
-<form method="POST">{% csrf_token %}
-	{{ form.as_p }}
-	<input type="submit" value="Sign Up">
-</form>
-
+	<form method="POST">{% csrf_token %}
+		{{ form.as_p }}
+		<input type="submit" value="Sign Up">
+	</form>
 {% endblock content %}
