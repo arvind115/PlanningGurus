@@ -27,7 +27,6 @@ class BillingManager(models.Manager):
             else: #need to create NEW BillingProfile
                 obj = self.model.objects.create(user=user,email=email)
                 created = True
-                print('\n\n BillingProfile created for ',user,'\n\n')
         return obj,created
 
 class BillingProfile(models.Model):
@@ -121,7 +120,6 @@ class Card(models.Model):
     def __str__(self):
         return "{} {}".format(self.brand, self.last4)
 
-
 def new_card_post_save_receiver(sender, instance, created, *args, **kwargs):
     if instance.default:
         billing_profile = instance.billing_profile
@@ -130,7 +128,6 @@ def new_card_post_save_receiver(sender, instance, created, *args, **kwargs):
         #mark the rest of the cards as 'inactive'
 
 post_save.connect(new_card_post_save_receiver, sender=Card)
-
 
 class ChargeManager(models.Manager):
     def do(self, billing_profile, order_obj, card=None): # Charge.objects.do()

@@ -22,20 +22,14 @@ def payment_method_view(request,*args,**kwargs):
 	return render(request,'billing/payment-method.html',{'publish_key':STRIPE_PUB_KEY,'next_url':next_url})
 
 def payment_method_create_view(request,*args,**kwargs):
-	# if request.method == 'POST' and request.is_ajax():
-	# 	print(request.POST)
-	# 	return JsonResponse({'message':'Success! Your card was added'})
-	# return HttpResponse('Error')
     if request.method == "POST" and request.is_ajax():
         billing_profile,created = BillingProfile.objects.new_or_get(request)
         if not billing_profile:
             return HttpResponse({"message": "Cannot find this user"}, status_code=401)
         token = request.POST.get("token")
         if token is not None:
-        	print('Token is not NOne')
         	new_card_obj = Card.objects.add_new(billing_profile, token)
-        	print('New card created')
         	return JsonResponse({"message": "Success! Your card was added."})
         else:
-        	print("Token is NONE. Display Errors")
+        	pass
     return HttpResponse("errors")

@@ -18,7 +18,6 @@ STRIPE_PUB_KEY = getattr(settings,"STRIPE_PUB_KEY",'pk_test_QcT5HsC0UoTP1xRhqbC8
 
 stripe.api_key = STRIPE_API_KEY
 
-
 def emf_and_event(booking):
 	'''returns True if Emf associated with current Booking instance organises the associated Event'''
 	if booking.emf is not None and booking.event is not None:
@@ -29,7 +28,6 @@ def emf_and_city(booking):
 		return booking.emf in booking.city.emf.all()
 
 def booking_view(request,*args,**kwargs):
-	print('\n\t\tin BOOKING VIEW\n')
 	booking_obj,created = Booking.objects.new_or_get(request)
 	context={ 'booking_obj':booking_obj }
 	event_slug = kwargs.get('event',None)
@@ -88,7 +86,6 @@ def booking_view(request,*args,**kwargs):
 	return render(request,"bookings/booking.html",context)
 
 def booking_home(request,*args,**kwargs):
-	print('\n\t\tin booking HOME\n')
 	booking_obj,created = Booking.objects.new_or_get(request) #return a booking object if already exists or creates a new one.	
 	form = CityForm(request.POST or None)
 	eform = EventForm(request.POST or None)
@@ -106,7 +103,6 @@ def booking_home(request,*args,**kwargs):
 	return render(request,'bookings/bookinghome.html',context)
 
 def booking_update(request):# del request.session['booking_obj']
-	print('\n\t\tin booking UPDATE\n')
 	print('POST: ',request.POST)
 	booking_obj, created = Booking.objects.new_or_get(request) #get the current BOOKING object, or create a new one.
 	if request.method == "POST":
@@ -151,7 +147,7 @@ def booking_update(request):# del request.session['booking_obj']
 					booking_obj.emf = emf
 		booking_obj.save()
 	else:
-		print("\n\tNOT a POST request\n")
+		pass
 	return redirect('bookings:home')
 
 def detail_view(request,*args,**kwargs):
@@ -170,8 +166,6 @@ def detail_view(request,*args,**kwargs):
 			booking_obj.details.photography=photography,
 			booking_obj.details.DJ_Entertainment=dj 
 			booking_obj.save()
-			# billing_profile,created = BillingProfile.objects.new_or_get(request)
-			print('redirecting to checkout form detail_view')
 			return redirect('bookings:checkout')# if necessary details have been filled, redirect to 'bookings:checkout'
 	context={
 		'form':form,
@@ -179,7 +173,6 @@ def detail_view(request,*args,**kwargs):
 	return render(request,'bookings/details.html',context)
 
 def checkout(request,*args,**kwargs):
-	print('\n\t\tin CHECKOUT\n')
 	#get the Booking object from the session
 	booking_obj,created = Booking.objects.new_or_get(request)
 	order_obj = None
@@ -188,13 +181,8 @@ def checkout(request,*args,**kwargs):
 	billing_profile,created = BillingProfile.objects.new_or_get(request)
 	if billing_profile is not None: #we have a billing_profile
 		order_obj,created = Order.objects.new_or_get(billing_profile,booking_obj)
-		print('billing_profile:: ',billing_profile)
-		if order_obj is not None:
-			print('Order_obj::',order_obj)
-		else:
-			print('\n\t\tOrder_obj is None\n')
 	else:
-		print('\n\t\tbilling_profile is None\n')
+		pass
 	if request.method == 'POST': #clicked on 'Proceed to Pay'
 		return redirect('payment-home')
 		# is_prepared = order_obj.is_done()
@@ -237,7 +225,6 @@ def payment_home(request,*args,**kwargs):
 		'publish_key':STRIPE_PUB_KEY,
 	}
 	return render(request,'bookings/paymenthome.html',context)
-
 
 def checkout_success(request,*args,**kwa):
 	#attach the order details to user profile

@@ -70,27 +70,20 @@ class Booking(models.Model):
 def booking_date_pre_save_reciever(sender,instance,*args,**kwargs):
 	instance.date_added = datetime.today() #assigns the current date
 
-# pre_save.connect(booking_date_pre_save_reciever,sender=Booking) #there was some runtime error of naive
-#date time field
-
 def pre_save_find_price_reciever(sender,instance,*args,**kwargs):
 	'''
 	A Booking object is associated with an appropriate Price object before saving.If a relevant Price 
 	object exists. Else no changes are made. (an invalid choice was made )
 	'''
-	print('\n\tBefor saving Booking\n')
 	if instance.event and instance.emf: #if both have been selected.
-		print("Calculating Total for Booking",instance.id)
-		print('EVENT: ',instance.event,'   EMF: ',instance.emf)
 		lookups = (Q(event__event__iexact=instance.event)&
 					Q(emf__title__iexact=instance.emf)
 					)
 		qs = Price.objects.filter(lookups) #check if a price object exists or not
 		if qs.count() == 1: #we have a Price object
-			print('We have a price object')
 			instance.amount = qs.first() #link to the price object
 		else:
-			print('\n\tNO price object for ',instance.event,' and ',instance.emf,'\n')
+			pass
 	else:
-		print("\nbooking object isn't complete yet\n")
+		pass
 pre_save.connect(pre_save_find_price_reciever,sender=Booking)
