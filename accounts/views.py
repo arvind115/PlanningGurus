@@ -34,4 +34,3 @@ def logout_view(request):
 	return redirect('home')
 	# modify it to stay the page,not redirect to login always.
 	#a user may logout from checkout page
-	# return render(request,'accounts/logout.html',{})
