@@ -38,14 +38,6 @@
 		   	{% include 'snippets/update-city.html' with booking=booking_obj city=booking_obj.city %}
 		{% endif %}
 		</td>
-		<!-- <td>
-		 {% if booking_obj.event is not None %}
-			<a href="{{ booking_obj.event.get_absolute_url }}">{{ booking_obj.event }}</a>
-		   {% include 'snippets/update-booking-event.html' with booking=booking_obj event=booking_obj.event %}
-		{% else %}
-			<a class="btn btn-success" href="{% url 'home' %}">Add an EVENT</a>
-		{% endif %}
-		</td> -->
 		<td>
 		{% if booking_obj.event is None %} <!-- display the add event form -->
 		    {% include 'snippets/update-booking-event.html' with booking=booking_obj df=True form=eform %}
@@ -59,7 +51,6 @@
 			<a href="{{ booking_obj.emf.get_absolute_url }}">{{ booking_obj.emf }}</a>
 		   {% include 'snippets/update-booking.html' with booking=booking_obj emf=booking_obj.emf %}
 		{% else %} <!-- emf is not there -->
-			<!-- if event is there, redirect to bookings/event=<slug> -->
 			{% if booking_obj.event %}
 				<a href="event={{booking_obj.event.slug}}" class="btn btn-primary">ADD AN EMF</a>
 			{% else %}
