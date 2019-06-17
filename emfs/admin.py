@@ -3,7 +3,6 @@ from django.contrib import admin
 # Register your models here.
 from .models import Emf
 
-
 class EmfAdmin(admin.ModelAdmin):
 	list_display= ['__str__','slug','email','eve','cities']
 	class Meta:

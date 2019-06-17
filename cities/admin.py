@@ -11,5 +11,4 @@ class CityAdmin(admin.ModelAdmin):
 	def emfs_in_city(self,obj):
 		return [x for x in obj.emf.all()]
 
-
 admin.site.register(City,CityAdmin)

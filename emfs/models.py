@@ -23,8 +23,7 @@ class Emf(models.Model):
 			('corporate','Corporate'),
 		)
 	title 		= models.CharField(max_length=60,blank=False,unique=True) #name of the firm
-	slug		= models.SlugField(default='abcd')
-	# city 		= models.CharField(max_length=50,blank=False) 	#main city of operation
+	slug		= models.SlugField(default='emf_slug')
 	region 		= models.CharField(max_length=50)				#region of operation 
 	email 		= models.EmailField(blank=True,					#email
 									unique=True,
