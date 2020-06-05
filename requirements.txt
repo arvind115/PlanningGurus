@@ -1,6 +1,6 @@
 certifi==2018.11.29
 chardet==3.0.4
-Django==2.0.7
+Django==2.2.13
 django-bootstrap-themes==3.3.6
 django-jsrender==0.2
 idna==2.8
